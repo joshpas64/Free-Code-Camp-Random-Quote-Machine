@@ -3,6 +3,26 @@ This folder contains the source files for the <a href="https://www.freecodecamp.
 
 Link to the <a href="http://codepen.io/joshpas4991/full/JbqXwp/">codepen.</a>
 
+### HTML Additions
+```html
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+```
+
+### CSS Libraries Used
+* <a href="http://getbootstrap.com/css">Google BootStrap</a>
+* <a href="https://bootswatch.com/slate/bootstrap.min.css">bootswatch's Slate Theme</a>
+
+### JavaScript Library Used
+* Since this project was only meant for a webpage and a single tweet can be <strong>setup</strong> but not posted, (needs user-confirmation requiring an actual sign-in) through a <em>web-intent</em> which <strong>does not</strong> require <em>authentication or authorization</em> to get to the link, the only library needed is <a href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js">front-end jQuery.</a>
+
+### Additional References
+* <a href="https://quotesondesign.com/api-v4-0/">Wordpress Random Quote API</a>
+* <a href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js">Twitter Developer Reference</a>
+* <a href="https://dev.twitter.com/web/tweet-button/web-intent">Twitter Tweet Web Intent</a>
+* <a href="http://www.w3schools.com/jquery/jquery_ref_ajax.asp">jQuery General and AJAX Reference</a>
+
 The main premise of this project was to learn to build a <strong>dynamic, front-end</strong> webpage through the use of the
 <ul>
 <li>API Calls Through the WordPress Quote API</li>
