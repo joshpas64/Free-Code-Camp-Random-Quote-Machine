@@ -1,0 +1,41 @@
+.jumbotron
+{
+  margin-top: 5%;
+  height: 80%;
+  width: 80%;
+  border-radius: 10px;
+}
+.btn-row
+{
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.btn-row .btn-info
+{
+  font-size: 32px;
+  padding: 0.5% 0 0.5% 0;
+}
+
+.quote-insert
+{
+  font-size: 20%;
+  text-align: center;
+}
+
+a {
+  color: blue;
+}
+.quote-source
+{
+  color: inherit;
+}
+
+.label-info
+{
+  color: black;
+  border-radius: 3px;
+  margin-left: 40%;
+  margin-right: 40%;
+  margin-bottom: 5%;
+}
