@@ -82,8 +82,65 @@ More detailed referene can be found at the <a href="http://v2.wp-api.org/">Wordp
 So now, you can generate random quotes. Now it is time to integrate Twitter!
 In the example project, like in many other sites, when click on the tweet <img src="https://cdn1.iconfinder.com/data/icons/logotypes/32/twitter-128.png" height="15" width="15"> icon, you go to a page with a tweet update with <strong>the text for the status update and any other mentions and hashtags pre-loaded</strong> regardless if you are <em>signed in or not!</em>. If you are not signed in, the <strong>Sign In</strong> or <strong>Sign Up</strong> button is down below. This is done using a link or `<a href="hyperlink"></a>` to a <a href="https://dev.twitter.com/web/intents">Twitter Web Intent</a> in the form of a <a href="https://dev.twitter.com/web/tweet-button/web-intent">Tweet Update Status or ReTweet Intent</a> 
 
-The link to the web intent itself links to a an empty tweet. We can add in HTTP parameters by adding a `?` at the end of URL. To have a tweet pre-filled with status update text, reTweet form, mentions, hastags, or links of your choosing, link to the web intent using
+The link to the web intent itself links to a an empty tweet. We can add in HTTP parameters by adding a `?` at the end of URL. To have a tweet pre-filled with status update text, reTweet form, mentions, hashtags, or links of your choosing, link to the web intent using
 ```
 https://twitter.com/intent/tweet?text=status_text&url=ENCODED_URL&via=TWITTER_HANDLE&hastags=hash1,hash2,hash3,etc&in_reply_to=TWEET_ID&related=COMMA_SEPARATED_LIST_OF_TWITTER_USERNAMES_RELATED
 ```
-Obviously not all fields, if any, have to be set only the ones of your choosing for the tweet web intent, although for some HTTP requests, especially certain `GET` and `POST` requests will have required fields.
+Obviously not all fields, if any, have to be set only the ones of your choosing for the tweet web intent, although for some HTTP requests, especially certain `GET` and `POST` requests or request methods will have required fields.
+* `text=` is the actual text of the status update
+* `url=` is a link that will appear to whatever URL of your choosing when the tweet is posted
+* `in_reply_to=` will have the twitter ID (all posts on twitter have a unique ID marker to identify them) the tweet is replying to
+* `via=` will have the handle or username of the Twitter account you would like the tweet to be asociated with
+* `hashtags=` will be a comma separated(no spaces) list of any hashtags you want the tweet to associate with
+* `related=` will be a comma separated list of twitter accounts also relating to the tweet
+
+Note: if you are typing these fields in a web address bar or in a formal HTTP they must be <strong>URI Encoded</strong> which can be done using <em>JavaScript built-in method</em> `encodeURIComponent(urlString)` or using <a href="http://www.w3schools.com/tags/ref_urlencode.asp">URL Percent(%) Escape Encoding</a>. Some helpful ones are:
+* `%0A` for a newline character `\n`
+* `%3B` for a ';' character (This may be needed so certain statements after a ';' do not get cut off) as in some languages statements are ended with `;` like <em>JavaScript</em>
+* `%2F` for a `/` character
+* `%20` for `space` character
+
+One can simply follow the layout for a tweet button <img src="https://static.addtoany.com/images/blog/tweet-button-2015.png" height="20" width="40"> <a href="https://dev.twitter.com/web/tweet-button">here.</a>
+
+The one little catch here is that how can change the <em>URL containing the tweet intent call</em> each time a random quote pops up and changes what the <strong>status update</strong> is supposed to be! Well first the twitter button should be anchored or linked to the <strong>Tweet-Intent-URL</strong> in a way like this:
+```html
+<a href="https://twitter.com/intent/tweet?text=PlaceHolder%20Status" class="twitter-share-button-link" target="_blank">
+  <button class="btn btn-info" id="tweet-button">
+  Twitter <i class="fa fa-twitter"></i>
+  </button>
+  </a>
+  ```
+Have the class `twitter-share-button-link` or some other name be tied to your link `<a></a>` tag so you can identify and have 
+the attribute be set to `target="blank"` so your browser will open a new tab or window when the link is pressed.
+
+Now, when the <strong>random quote button</strong> is <em>clicked</em>. Select, using <strong>jQuery</strong> your <em>twitter-share-link</em> and change its `href` attribute using the method:
+```javascript
+$(".twitter-share-link").attr("href",newURLString);
+```
+this attribute should be set each time a random quote is generated in the `$("#new-quote-id").on("click",function(){});`
+The new URL string and the attribute can be set within a function of its own that gets called in the <em>quote generator button's
+</em> <strong>onClick() function</strong>. 
+Note: to get the text values from an element use the `.text()` method like this:
+```javascript
+var valueString = $(".quote-content-class").text();
+```
+
+The function might look like this:
+```javascript
+  var adjustStatus = function() //Functions in javascript are variables 
+  {
+    var urlString = "https://twitter.com/intent/tweet?text="; // base URL
+    var quoteString = $(".quote-content-class").text() + "%0A"; // Get text and add a newline \n character for formatting
+    var authorString = "from " + $(".quote-source-class").text() + "%0A"; // Get source text
+    var hashTags = "&hashtags=front-end-dev,api-calls,quotes-of-awesome"; //set hashtags= field
+    urlString = urlString + quoteString + authorString; //Form new, complete URL
+    if((quoteString.length + authorString.length) < 100) //Only add the hashtags to the tweet if it will not go over
+                                                    // Twitter's 140 character limit
+      {
+        urlString += hashTags;
+      }
+    urlString = urlString.replace(";","%3B"); //Ensure no semicolons in the quote cause any interpretation issues by JavaScript
+    var encoded = encodeURIComponent(urlString)
+    $(".twitter-share-button").attr("href",urlString); //Set the tweet button's link to the new, updated URL
+  };
+```
